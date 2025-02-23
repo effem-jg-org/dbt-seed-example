@@ -57,9 +57,10 @@ jobs:
       - name: dbt Snowflake Seed
         uses: mwhitaker/dbt-action@master
         with:
-          dbt_command: "dbt seed --profiles-dir ./dbt_profiles/profiles_snowflake"
+          dbt_command: "dbt seed"
+          dbt_project_folder: "dbt"
         env:
-          DBT_PROFILES_DIR: ./dbt_profiles/profiles_snowflake
+          DBT_PROFILES_DIR: profiles/snowflake
           DBT_ENV_SECRET_SNOWFLAKE_DEV_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           DBT_ENV_SECRET_SNOWFLAKE_DEV_USER: ${{ secrets.SNOWFLAKE_USER }}
           DBT_ENV_SECRET_SNOWFLAKE_DEV_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
@@ -79,10 +80,10 @@ jobs:
       - name: dbt Databricks Seed
         uses: mwhitaker/dbt-action@master
         with:
-          dbt_command: "dbt seed --profiles-dir ./dbt_profiles/profiles_databricks"
-          http_path: ${{ secrets.DATABRICKS_CLUSTER_HTTP_PATH }}
+          dbt_command: "dbt seed"
+          dbt_project_folder: "dbt"
         env:
-          DBT_PROFILES_DIR: ./dbt_profiles/profiles_databricks
+          DBT_PROFILES_DIR: profiles/databricks
           DBT_ENV_SECRET_DATABRICKS_DEV_CLUSTER_HTTP_PATH: ${{ secrets.DATABRICKS_CLUSTER_HTTP_PATH }}
           DBT_ENV_SECRET_DATABRICKS_DEV_HOST: ${{ secrets.DATABRICKS_HOST }}
           DBT_ENV_SECRET_DATABRICKS_DEV_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}

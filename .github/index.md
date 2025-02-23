@@ -87,8 +87,11 @@ gh act -j snowflake_destroy \
 
 ```bash
 
-gh act -j databricks_destroy \
-  -e .github/local.json \
-  --secret-file ~/creds/databricks.secrets
+# TODO: databricks-setup-cli@mai unable to handle ssl cert
+#       SSL certificate problem: unable to get local issuer certificate
+
+# gh act -j databricks_destroy \
+#   -e .github/local.json \
+#   --secret-file ~/creds/databricks.secrets
 
 ```
