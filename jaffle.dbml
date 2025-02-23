@@ -1,0 +1,80 @@
+Project "jaffle-data-dc-example" {
+  database_type: 'Parquet'
+  Note: '''
+  The **Jaffle schema**, as defined in the `jaffle.dbml` file, represents the structure of a database for a fictional company called **Jaffle Shop**. 
+  The schema consists of several tables, including 
+  * `contract_first_raw.customers` 
+  * `contract_first_raw.items`
+  * `contract_first_raw.orders`
+  * others
+  
+  which store information about customers, items, orders, and more. Each table has specific **columns** with defined **data types**, such as 
+  strings, integers, and timestamps, and some columns have additional constraints like primary keys, not null, and unique. 
+  The schema also defines relationships between tables using references *(e.g., `Ref: contract_first_raw.customers.id < contract_first_raw.orders.customer`)*, indicating how 
+  data in one table relates to data in another. Overall, the Jaffle schema provides a blueprint for organizing and storing data related to 
+  Jaffle Shop's operations, but more importantly showcases the capability track source systems outside excel dictionaries.
+  '''
+}
+
+Table contract_first_raw.customers {
+  id string [primary key, note: 'Unique identifier for each customer.']
+  name string [not null, note: 'Customer name.']
+
+  Note: 'Jaffle Shop Customer Data'
+}
+
+Ref: contract_first_raw.customers.id < contract_first_raw.orders.customer
+
+Table contract_first_raw.items {
+  id string [primary key, note: 'Unique identifier for each item.']
+  order_id string [not null, note: 'Item order identifier.']
+  sku string [null, note: 'Item sku name.']
+
+  Note: 'Jaffle Shop Item Data'
+}
+
+Ref: contract_first_raw.items.order_id < contract_first_raw.orders.id
+Ref: contract_first_raw.items.sku > contract_first_raw.products.sku
+
+Table contract_first_raw.orders {
+  id string [primary key, note: 'Unique identifier for each order.']
+  customer string [not null, note: 'Order customer identifier.']
+  ordered_at timestamp [not null, note: 'Order timestamp.']
+  store_id string [not null, note: 'Jaffle store identifier.']
+  subtotal int [null, note: 'Cost of Jaffle order.']
+  tax_paid int [null, note: 'Tax on order.']
+  order_total int [null, note: 'Total cost of order.']
+
+  Note: 'Jaffle Shop Orders Data'
+}
+
+Table contract_first_raw.products {
+  sku string [not null, unique, note: 'Item sku name.']
+  name string [not null, note: 'Product name.']
+  type string [not null, note: 'Type of product.']
+  price int [not null, note: 'Product price.']
+  description string [null, note: 'Product description.']
+
+  Note: 'Jaffle Shop Products Data'
+}
+
+Table contract_first_raw.supplies {
+  id string [primary key, note: 'Unique identifier for supplies.']
+  name string [not null, note: 'Supply name.']
+  cost int [not null, note: 'Supply item cost.']
+  perishable bool [not null, note: 'Indication for perishable status.']
+  sku string [not null, note: 'Product sku name.']
+
+  Note: 'Jaffle Shop Supplies Data'
+}
+
+Table contract_first_raw.stores {
+  id string [primary key, note: 'Unique identifier for supplies.']
+  name string [not null, note: 'Supply name.']
+  opened_at timestamp [not null, note: 'City store opened at.']
+  tax_rate float [not null, note: 'City tax rate.']
+
+  Note: 'Jaffle Shop Stores Data'
+}
+
+Ref: contract_first_raw.stores.id < contract_first_raw.orders.store_id

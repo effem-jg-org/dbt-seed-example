@@ -1,0 +1,11 @@
+default:
+  target: dev
+  outputs:
+    dev:
+      type: "databricks"
+      catalog: "datagovernance_mvp" #optional catalog name if you are using Unity Catalog
+      schema: "contract_first_raw" # Required
+      host: "{{ env_var('DBT_ENV_SECRET_DATABRICKS_DEV_HOST') }}" # Required
+      http_path: "{{ env_var('DBT_ENV_SECRET_DATABRICKS_DEV_CLUSTER_HTTP_PATH') }}" # Required
+      token: "{{ env_var('DBT_ENV_SECRET_DATABRICKS_DEV_TOKEN') }}" # Required Personal Access Token (PAT) if using token-based authentication
+      threads: 10

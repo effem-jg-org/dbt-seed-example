@@ -1,0 +1,72 @@
+name: Warehouse Tear Down
+
+on: 
+  workflow_dispatch:
+    inputs:
+      warehouse:
+        type: choice
+        description: Warehouse to tear down dbt seed example
+        required: true
+        options:
+          - snowflake
+          - databricks
+      
+      snowflake_database:
+        description: Snowflake database name
+        required: false
+        type: string
+        default: TEST_DATACONTRACT
+      
+      databricks_schema:
+        description: Databricks schema name
+        required: false
+        type: string
+        default: datagovernance_mvp.contract_first_raw
+
+jobs:
+  snowflake_destroy:
+    if: ${{ github.event || github.event.inputs.warehouse == 'snowflake' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout step is necessary if you want to use a config file from your repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # Snowflake CLI installation
+      - uses: Snowflake-Labs/snowflake-cli-action@v1.5
+        with:
+          cli-version: "latest"
+      
+      # Use the CLI
+      - name: Destroy Snowflake Database
+        env:
+          SNOWFLAKE_CONNECTIONS_MYCONNECTION_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_CONNECTIONS_MYCONNECTION_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_CONNECTIONS_MYCONNECTION_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        run: |
+          snow object drop database TEST_DATACONTRACT
+
+  databricks_destroy:
+    if: ${{ github.event || github.event.inputs.warehouse == 'databricks' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout step is necessary if you want to use a config file from your repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      
+      # Download the Databricks CLI.
+      # See https://github.com/databricks/setup-cli
+      - uses: databricks/setup-cli@main
+
+      # Use the CLI to delete UC Schema
+      - name: Destroy Databricks Schema
+        run: databricks schemas delete ${{ github.event.inputs.databricks_schema }} --force
+        env:
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}

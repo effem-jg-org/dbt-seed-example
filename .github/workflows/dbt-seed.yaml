@@ -1,0 +1,88 @@
+name: dbt Seed
+
+on: 
+  workflow_dispatch:
+    inputs:
+      warehouse:
+        type: choice
+        description: Warehouse to run dbt seed operations against
+        required: true
+        options:
+          - snowflake
+          - databricks
+      
+      snowflake_database:
+        description: Snowflake database name
+        required: false
+        type: string
+        default: TEST_DATACONTRACT
+
+jobs:
+  snowflake_build:
+    if: ${{ github.event || github.event.inputs.warehouse == 'snowflake' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout step is necessary if you want to use a config file from your repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # Snowflake CLI installation
+      - uses: Snowflake-Labs/snowflake-cli-action@v1.5
+        with:
+          cli-version: "latest"
+      
+      # Use the CLI
+      - name: Build Snowflake Database
+        env:
+          SNOWFLAKE_CONNECTIONS_MYCONNECTION_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_CONNECTIONS_MYCONNECTION_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_CONNECTIONS_MYCONNECTION_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        run: |
+          snow object create database name=TEST_DATACONTRACT
+
+  snowflake_seed:
+    needs: [ snowflake_build ]
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout step is necessary if you want to use a config file from your repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: dbt Snowflake Seed
+        uses: mwhitaker/dbt-action@master
+        with:
+          dbt_command: "dbt seed --profiles-dir ./dbt_profiles/profiles_snowflake"
+        env:
+          DBT_PROFILES_DIR: ./dbt_profiles/profiles_snowflake
+          DBT_ENV_SECRET_SNOWFLAKE_DEV_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          DBT_ENV_SECRET_SNOWFLAKE_DEV_USER: ${{ secrets.SNOWFLAKE_USER }}
+          DBT_ENV_SECRET_SNOWFLAKE_DEV_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          DBT_ENV_SECRET_SNOWFLAKE_DEV_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+
+  databricks_seed:
+    if: ${{ github.event || github.event.inputs.warehouse == 'databricks' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout step is necessary if you want to use a config file from your repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      
+      - name: dbt Databricks Seed
+        uses: mwhitaker/dbt-action@master
+        with:
+          dbt_command: "dbt seed --profiles-dir ./dbt_profiles/profiles_databricks"
+          http_path: ${{ secrets.DATABRICKS_CLUSTER_HTTP_PATH }}
+        env:
+          DBT_PROFILES_DIR: ./dbt_profiles/profiles_databricks
+          DBT_ENV_SECRET_DATABRICKS_DEV_CLUSTER_HTTP_PATH: ${{ secrets.DATABRICKS_CLUSTER_HTTP_PATH }}
+          DBT_ENV_SECRET_DATABRICKS_DEV_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DBT_ENV_SECRET_DATABRICKS_DEV_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
