@@ -10,7 +10,7 @@ default:
       password: "{{ env_var('DBT_ENV_SECRET_SNOWFLAKE_DEV_PASSWORD') }}"  # this will be substituted during build time
 
       role: "{{ env_var('DBT_ENV_SECRET_SNOWFLAKE_DEV_ROLE') }}"
-      database: "TEST_DATACONTRACT"
+      database: "{{ env_var('DBT_ENV_DEV_SCHEMA') }}"
       warehouse: "TEST_ANALYTICS_SF"
       schema: "CONTRACT_FIRST_RAW"
       threads: 1

@@ -4,7 +4,7 @@ info:
   title: Enablement Team Example Data Contract
   version: 2025.01.28
   description: An example template to start drafting Contract First Designs
-  owner: enablement-team
+  owner: enabling-team
 
 ### terms
 
@@ -19,15 +19,15 @@ terms:
 servers:
   dna_databricks_production:
     type: databricks
-    host: __dna_prod_host_not_available__
-    catalog: __dna_prod_catalog_not_available__
-    schema: __dna_prod_schema_not_available__
+    host: 
+    catalog: 
+    schema: 
   
   dna_databricks_development:
     type: databricks
-    host: __dna_dev_host_not_available__
-    catalog: __dna_dev_catalog_not_available__
-    schema: __dna_dev_schema_not_available__
+    host: 
+    catalog: 
+    schema: 
   
   aoh_production:
     type: dataframe
@@ -37,15 +37,15 @@ servers:
   
   snowflake_production:
     type: snowflake
-    account: __snowflake_prod_account_not_available__
-    database: __snowflake_prod_database_not_available__
-    schema: __snowflake_prod_schema_not_available__
+    account: 
+    database: 
+    schema: 
   
   snowflake_development:
     type: snowflake
-    account: __snowflake_dev_account_not_available__
-    database: __snowflake_dev_database_not_available__
-    schema: __snowflake_dev_schema_not_available__
+    account: 
+    database: 
+    schema: 
 
 ### servicelevels
 

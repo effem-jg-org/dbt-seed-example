@@ -11,8 +11,8 @@ on:
           - snowflake
           - databricks
       
-      snowflake_database:
-        description: Snowflake database name
+      dbt_schema:
+        description: dbt Schema for RAW Jaffle Shop Data
         required: false
         type: string
         default: TEST_DATACONTRACT
@@ -40,8 +40,7 @@ jobs:
           SNOWFLAKE_CONNECTIONS_MYCONNECTION_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_CONNECTIONS_MYCONNECTION_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_CONNECTIONS_MYCONNECTION_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-        run: |
-          snow object create database name=TEST_DATACONTRACT
+        run: "snow object create database name=${{ github.event.inputs.dbt_schema }}"
 
   snowflake_seed:
     needs: [ snowflake_build ]
@@ -61,6 +60,7 @@ jobs:
           dbt_project_folder: "dbt"
         env:
           DBT_PROFILES_DIR: profiles/snowflake
+          DBT_ENV_DEV_SCHEMA: ${{ github.event.inputs.dbt_schema }}
           DBT_ENV_SECRET_SNOWFLAKE_DEV_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           DBT_ENV_SECRET_SNOWFLAKE_DEV_USER: ${{ secrets.SNOWFLAKE_USER }}
           DBT_ENV_SECRET_SNOWFLAKE_DEV_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
@@ -84,6 +84,7 @@ jobs:
           dbt_project_folder: "dbt"
         env:
           DBT_PROFILES_DIR: profiles/databricks
+          DBT_ENV_DEV_SCHEMA: ${{ github.event.inputs.dbt_schema }}
           DBT_ENV_SECRET_DATABRICKS_DEV_CLUSTER_HTTP_PATH: ${{ secrets.DATABRICKS_CLUSTER_HTTP_PATH }}
           DBT_ENV_SECRET_DATABRICKS_DEV_HOST: ${{ secrets.DATABRICKS_HOST }}
           DBT_ENV_SECRET_DATABRICKS_DEV_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}

@@ -11,14 +11,14 @@ on:
           - snowflake
           - databricks
       
-      snowflake_database:
-        description: Snowflake database name
+      dbt_schema:
+        description: dbt Schema for RAW Jaffle Shop Data
         required: false
         type: string
         default: TEST_DATACONTRACT
       
       databricks_schema:
-        description: Databricks schema name
+        description: Databricks Unity Catalog name
         required: false
         type: string
         default: datagovernance_mvp.contract_first_raw
@@ -46,8 +46,7 @@ jobs:
           SNOWFLAKE_CONNECTIONS_MYCONNECTION_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_CONNECTIONS_MYCONNECTION_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_CONNECTIONS_MYCONNECTION_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-        run: |
-          snow object drop database TEST_DATACONTRACT
+        run: "snow object drop database ${{ github.event.inputs.dbt_schema }}"
 
   databricks_destroy:
     if: ${{ github.event || github.event.inputs.warehouse == 'databricks' }}
@@ -66,7 +65,7 @@ jobs:
 
       # Use the CLI to delete UC Schema
       - name: Destroy Databricks Schema
-        run: databricks schemas delete ${{ github.event.inputs.databricks_schema }} --force
+        run: "databricks schemas delete ${{ github.event.inputs.databricks_schema }} --force"
         env:
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}

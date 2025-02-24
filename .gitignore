@@ -1,0 +1,6 @@
+dbt/target/*
+dbt/profiles/snowflake/.user.yml
+dbt/seeds/parquet/*
+dbt/logs/*.log
+dbt/profiles/databricks/.user.yml
+metadata/*/*/*.json
