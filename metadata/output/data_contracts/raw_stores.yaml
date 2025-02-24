@@ -1,0 +1,101 @@
+dataContractSpecification: 1.1.0
+id: enablement_team_data_contract_id
+info:
+  title: jaffle-data-dc-example
+  version: 2025.01.28
+  description: An example template to start drafting Contract First Designs
+  owner: enabling-team
+servers:
+  dna_databricks_production:
+    type: databricks
+    schema: __dna_prod_schema_not_available__
+    host: __dna_prod_host_not_available__
+    catalog: __dna_prod_catalog_not_available__
+  dna_databricks_development:
+    type: databricks
+    schema: __dna_dev_schema_not_available__
+    host: __dna_dev_host_not_available__
+    catalog: __dna_dev_catalog_not_available__
+  aoh_production:
+    type: dataframe
+  aoh_development:
+    type: dataframe
+  snowflake_production:
+    type: snowflake
+    account: __snowflake_prod_account_not_available__
+    database: __snowflake_prod_database_not_available__
+    schema: __snowflake_prod_schema_not_available__
+  snowflake_development:
+    type: snowflake
+    account: __snowflake_dev_account_not_available__
+    database: __snowflake_dev_database_not_available__
+    schema: __snowflake_dev_schema_not_available__
+terms:
+  usage: The Consumer may use the Data solely for the purpose of building analytical
+    data products internally to Mars. The Consumer shall not use the Data for any
+    other purpose without the prior written consent of the Provider.
+  limitations: The Consumer shall not share the Data with any third party without
+    the prior written consent from the Retailer/ Vendor.
+  billing: The Consumer can use the Data at no costs but those indirectly related
+    to platform fees.
+  noticePeriod: The Producer shall notify the Consumer of any changes to the Data
+    within 5 days of the change.
+models:
+  stores:
+    description: Jaffle Shop Stores Data
+    namespace: contract_first_raw
+    fields:
+      id:
+        type: string
+        required: false
+        primaryKey: true
+        unique: false
+        references: orders.store_id
+        description: Unique identifier for supplies.
+      name:
+        type: string
+        required: true
+        primaryKey: false
+        unique: false
+        description: Supply name.
+      opened_at:
+        type: timestamp
+        required: true
+        primaryKey: false
+        unique: false
+        description: City store opened at.
+      tax_rate:
+        type: float
+        required: true
+        primaryKey: false
+        unique: false
+        description: City tax rate.
+servicelevels:
+  availability:
+    description: The server is available during support hours
+    percentage: 99.9%
+  retention:
+    description: Data is retained for three years in hot storage, and thereafter archived
+      in cold storage
+    period: P3Y
+    unlimited: false
+  latency:
+    description: Data is available within 24 hours after the approval is requested
+    threshold: 24h
+  freshness:
+    description: The refresh cadence of this data is weekly.
+    threshold: 1w
+  frequency:
+    description: Data is updated weekly on Monday.
+    type: batch
+    interval: weekly
+    cron: 0 0 1 * *
+  support:
+    description: Support team under P5 to P3 capacity is reachable between 6:00AM
+      - 3:00PM UTC Monday through Friday.
+    time: 6:00AM to 3:00PM UTC on business days.
+    responseTime: 1h
+  backup:
+    description: Data snapshots are taken once a week, every Monday after data availability.
+    interval: weekly
+    cron: 0 0 1 * 0

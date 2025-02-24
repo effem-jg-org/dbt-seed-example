@@ -1,0 +1,124 @@
+dataProductSpecification: 0.0.1
+id: urn:dataproduct:project:jaffle-shop:dbt:jaffle-shop-raw
+
+info:
+  title: dbt Jaffle Shop Raw
+  description: Example Jaffle Shop RAW Data provided by dbt/ created by dbt seed.
+  owner: enabling-team
+  status: development
+  archetype: consumer-aligned
+  maturity: managed
+
+inputPorts:
+- id: urn:sourcesystem:jaffle-shop:dbt-seed
+  name: Jaffle Shop Example Data
+  description: Example Jaffle Shop data provided by dbt/ created by dbt seed.
+  sourceSystemId: urn:sourcesystem:jaffle-shop:dbt-seed
+  type: dbt-seed
+  location: https://github.com/dbt-labs/jaffle-shop
+  tags:
+  - POC
+  links:
+    schema: https://github.com/dbt-labs/jaffle-shop
+    catalog: https://catalog.example.com/search/search-queries/
+
+outputPorts:
+- id: urn:dataproduct:project:jaffle-shop:dbt:jaffle-shop-raw:customers
+  name: Jaffle Shop Customers
+  description: Jaffle Shop Customers
+  type: csv
+  status: development
+  autoApprove: false
+  containsPii: false
+  dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:customers
+  tags:
+  - POC
+  - RAW
+  links:
+    schema: https://dbdocs.io/jason.grein2c795d99d9/jaffle-shop-example?schema=contract_first_raw&table=customers
+    catalog: https://catalog.example.com/search/search-queries/
+
+- id: urn:dataproduct:project:jaffle-shop:dbt:jaffle-shop-raw:items
+  name: Jaffle Shop Items
+  description: Jaffle Shop Items
+  type: csv
+  status: development
+  autoApprove: false
+  containsPii: false
+  dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items
+  tags:
+  - POC
+  - RAW
+  links:
+    schema: https://dbdocs.io/jason.grein2c795d99d9/jaffle-shop-example?schema=contract_first_raw&table=items
+    catalog: https://catalog.example.com/search/search-queries/
+
+- id: urn:dataproduct:project:jaffle-shop:dbt:jaffle-shop-raw:orders
+  name: Jaffle Shop Orders
+  description: Jaffle Shop Orders
+  type: csv
+  status: development
+  autoApprove: false
+  containsPii: false
+  dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders
+  tags:
+  - POC
+  - RAW
+  links:
+    schema: https://dbdocs.io/jason.grein2c795d99d9/jaffle-shop-example?schema=contract_first_raw&table=orders
+    catalog: https://catalog.example.com/search/search-queries/
+
+- id: urn:dataproduct:project:jaffle-shop:dbt:jaffle-shop-raw:products
+  name: Jaffle Shop Products
+  description: Jaffle Shop Products
+  type: csv
+  status: development
+  autoApprove: false
+  containsPii: false
+  dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:products
+  tags:
+  - POC
+  - RAW
+  links:
+    schema: https://dbdocs.io/jason.grein2c795d99d9/jaffle-shop-example?schema=contract_first_raw&table=products
+    catalog: https://catalog.example.com/search/search-queries/
+
+- id: urn:dataproduct:project:jaffle-shop:dbt:jaffle-shop-raw:stores
+  name: Jaffle Shop Stores
+  description: Jaffle Shop Stores
+  type: csv
+  status: development
+  autoApprove: false
+  containsPii: false
+  dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:stores
+  tags:
+  - POC
+  - RAW
+  links:
+    schema: https://dbdocs.io/jason.grein2c795d99d9/jaffle-shop-example?schema=contract_first_raw&table=stores
+    catalog: https://catalog.example.com/search/search-queries/
+
+- id: urn:dataproduct:project:jaffle-shop:dbt:jaffle-shop-raw:supplies
+  name: Jaffle Shop Supplies
+  description: Jaffle Shop Supplies
+  type: csv
+  status: development
+  autoApprove: false
+  containsPii: false
+  dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:supplies
+  tags:
+  - POC
+  - RAW
+  links:
+    schema: https://dbdocs.io/jason.grein2c795d99d9/jaffle-shop-example?schema=contract_first_raw&table=supplies
+    catalog: https://catalog.example.com/search/search-queries/
+
+tags:
+- POC
+- RAW
+
+links:
+  schema: https://dbdocs.io/jason.grein2c795d99d9/jaffle-shop-example?schema=contract_first_raw
+  documentation: https://github.com/effem-jg-org/dbt-seed-example/README.md
+  catalog: https://catalog.example.com/search/search-queries/
+  repository: https://github.com/effem-jg-org/dbt-seed-example

@@ -1,0 +1,8 @@
+id: urn:sourcesystem:jaffle-shop:dbt-seed
+name: Jaffle Shop Example Data
+owner: enabling-team
+description: Example Jaffle Shop data provided by dbt/ created by dbt seed.
+tags:
+- POC
+links:
+  homepage: https://github.com/dbt-labs/jaffle-shop
