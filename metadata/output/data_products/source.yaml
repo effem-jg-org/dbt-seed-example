@@ -1,0 +1,66 @@
+dataProductSpecification: 0.0.1
+id: urn:dataproduct:project:jaffle-shop:dbt:jaffle-shop-raw
+info:
+  title: dbt Jaffle Shop Raw
+  description: Example Jaffle Shop RAW Data provided by dbt/ created by dbt seed.
+  owner: enabling-team
+  status: development
+  archetype: consumer-aligned
+  maturity: managed
+inputPorts:
+  - id: urn:sourcesystem:jaffle-shop:dbt-seed
+    name: Jaffle Shop Example Data
+    description: Example Jaffle Shop data provided by dbt/ created by dbt seed.
+    sourceSystemId: urn:sourcesystem:jaffle-shop:dbt-seed
+    autoApprove: false
+    containsPii: false
+outputPorts:
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:customers
+    name: Jaffle Shop RAW Customers Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Customers Data provided
+      by dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:customers
+    autoApprove: false
+    containsPii: false
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items
+    name: Jaffle Shop RAW Items Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Items Data provided by
+      dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items
+    autoApprove: false
+    containsPii: false
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders
+    name: Jaffle Shop RAW Orders Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Orders Data provided by
+      dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders
+    autoApprove: false
+    containsPii: false
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:products
+    name: Jaffle Shop RAW Products Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Products Data provided
+      by dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:products
+    autoApprove: false
+    containsPii: false
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:stores
+    name: Jaffle Shop RAW Stores Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Stores Data provided by
+      dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:stores
+    autoApprove: false
+    containsPii: false
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:supplies
+    name: Jaffle Shop RAW Supplies Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Supplies Data provided
+      by dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:supplies
+    autoApprove: false
+    containsPii: false
+tags:
+  - POC
+  - RAW
+links:
+  documentation: $gh_repo/README.md
+  catalog: https://catalog.example.com/search/search-queries/
+  repository: $gh_repo

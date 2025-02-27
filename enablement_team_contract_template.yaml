@@ -19,15 +19,15 @@ terms:
 servers:
   dna_databricks_production:
     type: databricks
-    host: 
-    catalog: 
-    schema: 
+    host: NA
+    catalog: NA 
+    schema: NA
   
   dna_databricks_development:
     type: databricks
-    host: 
-    catalog: 
-    schema: 
+    host: NA
+    catalog: NA 
+    schema: NA
   
   aoh_production:
     type: dataframe
@@ -37,15 +37,15 @@ servers:
   
   snowflake_production:
     type: snowflake
-    account: 
-    database: 
-    schema: 
+    account: NA
+    database: NA
+    schema: NA
   
   snowflake_development:
     type: snowflake
-    account: 
-    database: 
-    schema: 
+    account: NA
+    database: NA
+    schema: NA
 
 ### servicelevels
 

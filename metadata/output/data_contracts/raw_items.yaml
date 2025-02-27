@@ -1,35 +1,36 @@
 dataContractSpecification: 1.1.0
-id: enablement_team_data_contract_id
+id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items
 info:
-  title: jaffle-data-dc-example
-  version: 2025.01.28
-  description: An example template to start drafting Contract First Designs
+  title: Jaffle Shop RAW Items Data Contract
+  version: 2025.02.26
+  description: Data Contract for Example Jaffle Shop RAW Items Data provided by dbt/
+    created by dbt seed.
   owner: enabling-team
 servers:
   dna_databricks_production:
     type: databricks
-    schema: __dna_prod_schema_not_available__
-    host: __dna_prod_host_not_available__
-    catalog: __dna_prod_catalog_not_available__
+    schema: NA
+    host: NA
+    catalog: NA
   dna_databricks_development:
     type: databricks
-    schema: __dna_dev_schema_not_available__
-    host: __dna_dev_host_not_available__
-    catalog: __dna_dev_catalog_not_available__
+    schema: jaffle_shop
+    host: NA
+    catalog: datagovernance_mvp
   aoh_production:
     type: dataframe
   aoh_development:
     type: dataframe
   snowflake_production:
     type: snowflake
-    account: __snowflake_prod_account_not_available__
-    database: __snowflake_prod_database_not_available__
-    schema: __snowflake_prod_schema_not_available__
+    account: NA
+    database: NA
+    schema: NA
   snowflake_development:
     type: snowflake
-    account: __snowflake_dev_account_not_available__
-    database: __snowflake_dev_database_not_available__
-    schema: __snowflake_dev_schema_not_available__
+    account: NA
+    database: DATAGOVERNANCE_MVP
+    schema: JAFFLE_SHOP
 terms:
   usage: The Consumer may use the Data solely for the purpose of building analytical
     data products internally to Mars. The Consumer shall not use the Data for any
@@ -41,9 +42,9 @@ terms:
   noticePeriod: The Producer shall notify the Consumer of any changes to the Data
     within 5 days of the change.
 models:
-  items:
+  raw_items:
     description: Jaffle Shop Item Data
-    namespace: contract_first_raw
+    namespace: jaffle_shop
     fields:
       id:
         type: string
@@ -56,14 +57,14 @@ models:
         required: true
         primaryKey: false
         unique: false
-        references: orders.id
+        references: raw_orders.id
         description: Item order identifier.
       sku:
         type: string
         required: false
         primaryKey: false
         unique: false
-        references: products.sku
+        references: raw_products.sku
         description: Item sku name.
 servicelevels:
   availability:
