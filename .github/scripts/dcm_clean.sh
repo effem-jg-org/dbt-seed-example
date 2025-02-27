@@ -23,13 +23,12 @@ source_system_exists () {
   fi
 }
 
-source_system_create () {
-  log "Creating Source System ${1}"
-  curl -s -X 'PUT' \
+source_system_delete () {
+  log "Deleting Source System ${1}"
+  curl -s -X 'DELETE' \
     "${DATACONTRACT_MANAGER_HOST}/api/sourcesystems/${1}" \
     --header "x-api-key: ${DATACONTRACT_MANAGER_API_KEY}" \
-    --header "content-type: application/json" \
-    --data "$(cat ${2} | yq)"
+    --header "content-type: application/json"
 }
 
 data_contract_exists () {
@@ -48,13 +47,12 @@ data_contract_exists () {
   fi
 }
 
-data_contract_create () {
-  log "Creating Data Contract ${1}"
-  curl -s -X 'PUT' \
+data_contract_delete () {
+  log "Deleting Data Contract ${1}"
+  curl -s -X 'DELETE' \
     "${DATACONTRACT_MANAGER_HOST}/api/datacontracts/${1}" \
     --header "x-api-key: ${DATACONTRACT_MANAGER_API_KEY}" \
-    --header "content-type: application/json" \
-    --data "$(cat ${2} | yq)"
+    --header "content-type: application/json"
 }
 
 data_product_exists () {
@@ -73,41 +71,28 @@ data_product_exists () {
   fi
 }
 
-data_product_create () {
-  log "Creating Data Product ${1}"
-  curl -s -X 'PUT' \
+data_product_delete () {
+  log "Deleting Data Product ${1}"
+  curl -s -X 'DELETE' \
     "${DATACONTRACT_MANAGER_HOST}/api/dataproducts/${1}" \
     --header "x-api-key: ${DATACONTRACT_MANAGER_API_KEY}" \
-    --header "content-type: application/json" \
-    --data "$(cat ${2} | yq)"
+    --header "content-type: application/json"
 }
 
-for source_system in metadata/output/source_systems/*.yaml; do
-  source_system_id=$(cat ${source_system} | yq -r '.id')
-  if source_system_exists "${source_system_id}"; then
-    log "Evaluating diff between code repo vs DCM."
-    ## TODO: Build Smart Comparison
-  fi
-
-  source_system_create "${source_system_id}" "${source_system}"
-done
-
-
 for data_contract in metadata/output/data_contracts/*.yaml; do
+  [ -e ${data_contract} ] || continue
+  
   data_contract_id=$(cat ${data_contract} | yq -r '.id')
+  data_contract_exists "${data_contract_id}"
   if data_contract_exists "${data_contract_id}"; then
-    log "Evaluating diff between code repo vs DCM."
-    ## TODO: Build Smart Comparison
+    data_contract_delete "${data_contract_id}"
   fi
-  data_contract_create "${data_contract_id}" "${data_contract}"
 done
 
 
 for data_product in metadata/output/data_products/*.yaml; do
   data_product_id=$(cat ${data_product} | yq -r '.id')
   if data_product_exists "${data_product_id}"; then
-    log "Evaluating diff between code repo vs DCM."
-    ## TODO: Build Smart Comparison
+    data_product_delete "${data_product_id}"
   fi
-  data_product_create "${data_product_id}" "${data_product}"
 done

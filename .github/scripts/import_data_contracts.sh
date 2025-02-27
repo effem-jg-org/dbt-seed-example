@@ -1,20 +1,22 @@
-export DATABRICKS_DEV_CATALOG=$(cat ./dbt/logs/dbt_databricks_dev_config.log | grep -Po '(?<=catalog:\s)[a-zA-Z0-9_]+')
-export DATABRICKS_DEV_SCHEMA=$(cat ./dbt/logs/dbt_databricks_dev_config.log | grep -Po '(?<=schema:\s)[a-zA-Z0-9_]+')
+#!/bin/bash
 
-export DATABRICKS_PROD_CATALOG=$(cat ./dbt/logs/dbt_databricks_prod_config.log | grep -Po '(?<=catalog:\s)[a-zA-Z0-9_]+')
-export DATABRICKS_PROD_SCHEMA=$(cat ./dbt/logs/dbt_databricks_prod_config.log | grep -Po '(?<=schema:\s)[a-zA-Z0-9_]+')
+export DATABRICKS_DEV_CATALOG=$(cat dbt/logs/dbt_databricks_dev_config.log | grep -Po '(?<=catalog:\s)[a-zA-Z0-9_]+')
+export DATABRICKS_DEV_SCHEMA=$(cat dbt/logs/dbt_databricks_dev_config.log | grep -Po '(?<=schema:\s)[a-zA-Z0-9_]+')
 
-export SNOWFLAKE_DEV_DATABASE=$(cat ./dbt/logs/dbt_snowflake_dev_config.log | grep -Po '(?<=database:\s)[a-zA-Z0-9_]+')
-export SNOWFLAKE_DEV_SCHEMA=$(cat ./dbt/logs/dbt_snowflake_dev_config.log | grep -Po '(?<=schema:\s)[a-zA-Z0-9_]+')
+export DATABRICKS_PROD_CATALOG=$(cat dbt/logs/dbt_databricks_prod_config.log | grep -Po '(?<=catalog:\s)[a-zA-Z0-9_]+')
+export DATABRICKS_PROD_SCHEMA=$(cat dbt/logs/dbt_databricks_prod_config.log | grep -Po '(?<=schema:\s)[a-zA-Z0-9_]+')
 
-export SNOWFLAKE_PROD_DATABASE=$(cat ./dbt/logs/dbt_snowflake_prod_config.log | grep -Po '(?<=database:\s)[a-zA-Z0-9_]+')
-export SNOWFLAKE_PROD_SCHEMA=$(cat ./dbt/logs/dbt_snowflake_prod_config.log | grep -Po '(?<=schema:\s)[a-zA-Z0-9_]+')
+export SNOWFLAKE_DEV_DATABASE=$(cat dbt/logs/dbt_snowflake_dev_config.log | grep -Po '(?<=database:\s)[a-zA-Z0-9_]+')
+export SNOWFLAKE_DEV_SCHEMA=$(cat dbt/logs/dbt_snowflake_dev_config.log | grep -Po '(?<=schema:\s)[a-zA-Z0-9_]+')
+
+export SNOWFLAKE_PROD_DATABASE=$(cat dbt/logs/dbt_snowflake_prod_config.log | grep -Po '(?<=database:\s)[a-zA-Z0-9_]+')
+export SNOWFLAKE_PROD_SCHEMA=$(cat dbt/logs/dbt_snowflake_prod_config.log | grep -Po '(?<=schema:\s)[a-zA-Z0-9_]+')
 
 datacontract import \
   --format dbml \
   --source jaffle-shop.dbml \
-  --dbml-schema contract_first_raw \
-  --dbml-table supplies \
+  --dbml-schema jaffle_shop \
+  --dbml-table raw_supplies \
   --template enablement_team_contract_template.yaml \
   --output metadata/output/data_contracts/raw_supplies.yaml
 
@@ -37,11 +39,13 @@ cat metadata/output/data_contracts/raw_supplies.yaml | yq | \
   jq --arg v11 ${SNOWFLAKE_DEV_SCHEMA:-NA} '.servers.snowflake_development.schema |= $v11' > \
   metadata/output/data_contracts/raw_supplies.json
 
+cat metadata/output/data_contracts/raw_supplies.json | yq --yaml-output > metadata/output/data_contracts/raw_supplies.yaml
+
 datacontract import \
   --format dbml \
   --source jaffle-shop.dbml \
-  --dbml-schema contract_first_raw \
-  --dbml-table stores \
+  --dbml-schema jaffle_shop \
+  --dbml-table raw_stores \
   --template enablement_team_contract_template.yaml \
   --output metadata/output/data_contracts/raw_stores.yaml
 
@@ -64,11 +68,13 @@ cat metadata/output/data_contracts/raw_stores.yaml | yq | \
   jq --arg v11 ${SNOWFLAKE_DEV_SCHEMA:-NA} '.servers.snowflake_development.schema |= $v11' > \
   metadata/output/data_contracts/raw_stores.json
 
+cat metadata/output/data_contracts/raw_stores.json | yq --yaml-output > metadata/output/data_contracts/raw_stores.yaml
+
 datacontract import \
   --format dbml \
   --source jaffle-shop.dbml \
-  --dbml-schema contract_first_raw \
-  --dbml-table products \
+  --dbml-schema jaffle_shop \
+  --dbml-table raw_products \
   --template enablement_team_contract_template.yaml \
   --output metadata/output/data_contracts/raw_products.yaml
 
@@ -91,11 +97,13 @@ cat metadata/output/data_contracts/raw_products.yaml | yq | \
   jq --arg v11 ${SNOWFLAKE_DEV_SCHEMA:-NA} '.servers.snowflake_development.schema |= $v11' > \
   metadata/output/data_contracts/raw_products.json
 
+cat metadata/output/data_contracts/raw_products.json | yq --yaml-output > metadata/output/data_contracts/raw_products.yaml
+
 datacontract import \
   --format dbml \
   --source jaffle-shop.dbml \
-  --dbml-schema contract_first_raw \
-  --dbml-table orders \
+  --dbml-schema jaffle_shop \
+  --dbml-table raw_orders \
   --template enablement_team_contract_template.yaml \
   --output metadata/output/data_contracts/raw_orders.yaml
 
@@ -118,11 +126,13 @@ cat metadata/output/data_contracts/raw_orders.yaml | yq | \
   jq --arg v11 ${SNOWFLAKE_DEV_SCHEMA:-NA} '.servers.snowflake_development.schema |= $v11' > \
   metadata/output/data_contracts/raw_orders.json
 
+cat metadata/output/data_contracts/raw_orders.json | yq --yaml-output > metadata/output/data_contracts/raw_orders.yaml
+
 datacontract import \
   --format dbml \
   --source jaffle-shop.dbml \
-  --dbml-schema contract_first_raw \
-  --dbml-table items \
+  --dbml-schema jaffle_shop \
+  --dbml-table raw_items \
   --template enablement_team_contract_template.yaml \
   --output metadata/output/data_contracts/raw_items.yaml
 
@@ -145,11 +155,13 @@ cat metadata/output/data_contracts/raw_items.yaml | yq | \
   jq --arg v11 ${SNOWFLAKE_DEV_SCHEMA:-NA} '.servers.snowflake_development.schema |= $v11' > \
   metadata/output/data_contracts/raw_items.json
 
+cat metadata/output/data_contracts/raw_items.json | yq --yaml-output > metadata/output/data_contracts/raw_items.yaml
+
 datacontract import \
   --format dbml \
   --source jaffle-shop.dbml \
-  --dbml-schema contract_first_raw \
-  --dbml-table customers \
+  --dbml-schema jaffle_shop \
+  --dbml-table raw_customers \
   --template enablement_team_contract_template.yaml \
   --output metadata/output/data_contracts/raw_customers.yaml
 
@@ -171,3 +183,5 @@ cat metadata/output/data_contracts/raw_customers.yaml | yq | \
   jq --arg v10 ${SNOWFLAKE_PROD_SCHEMA:-NA} '.servers.snowflake_production.schema |= $v10' | \
   jq --arg v11 ${SNOWFLAKE_DEV_SCHEMA:-NA} '.servers.snowflake_development.schema |= $v11' > \
   metadata/output/data_contracts/raw_customers.json
+
+cat metadata/output/data_contracts/raw_customers.json | yq --yaml-output > metadata/output/data_contracts/raw_customers.yaml
