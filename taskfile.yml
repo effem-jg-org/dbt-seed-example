@@ -1,0 +1,117 @@
+version: "3"
+
+tasks:
+  venv:
+    dir: '{{.USER_WORKING_DIR}}/dbt'
+    cmds:
+      - python3 -m venv .venv
+
+  install:
+    deps: [ venv ]
+    dir: '{{.USER_WORKING_DIR}}/dbt'
+    cmds:
+      - source .venv/bin/activate && python3 -m pip install --upgrade pip
+      - source .venv/bin/activate && python3 -m pip install -r requirements.txt
+      - source .venv/bin/activate && python3 -m pip install dbt-core
+  
+  install_dbt_databricks:
+    dir: '{{.USER_WORKING_DIR}}/dbt'
+    deps: [ install ]
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    cmds:
+      - source .venv/bin/activate && python3 -m pip install dbt-databricks==1.9.6
+  
+  install_dbt_snowflake:
+    dir: '{{.USER_WORKING_DIR}}/dbt'
+    deps: [ install ]
+    cmds:
+      - source .venv/bin/activate && python3 -m pip install dbt-snowflake==1.9.1
+  
+  build_snowflake_database:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/snowflake.secrets' ]
+    cmds:
+      - cmd: snow object create database name=$DBT_ENV_DEV_DATABASE
+        ignore_error: true
+  
+  clean_snowflake_database:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/snowflake.secrets' ]
+    cmds:
+      - cmd: snow object drop database $DBT_ENV_DEV_DATABASE
+        ignore_error: true
+  
+  clean_databricks_database:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/databricks.secrets' ]
+    cmds:
+      - cmd: databricks schemas delete $DBT_ENV_DEV_DATABASE.jaffle_shop_raw_dev --force
+        ignore_error: true
+  
+  seed_dbt_databricks:
+    dir: '{{.USER_WORKING_DIR}}/dbt'
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dbt.secrets' ]
+    cmds:
+      - source .venv/bin/activate && dbt debug --profiles-dir profiles/databricks --target dev > logs/dbt_databricks_dev_config.log
+      - cmd: source .venv/bin/activate && dbt debug --profiles-dir profiles/databricks --target prod > logs/dbt_databricks_prod_config.log
+        ignore_error: true
+      - source .venv/bin/activate && dbt seed --profiles-dir profiles/databricks
+  
+  seed_dbt_snowflake:
+    dir: '{{.USER_WORKING_DIR}}/dbt'
+    deps: [ build_snowflake_database ]
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dbt.secrets' ]
+    cmds:
+      - source .venv/bin/activate && dbt debug --profiles-dir profiles/snowflake --target dev > logs/dbt_snowflake_dev_config.log
+      - cmd: source .venv/bin/activate && dbt debug --profiles-dir profiles/snowflake --target prod > logs/dbt_snowflake_prod_config.log
+        ignore_error: true
+      - source .venv/bin/activate && dbt seed --profiles-dir profiles/snowflake
+  
+  clean_dbt:
+    dir: '{{.USER_WORKING_DIR}}/dbt'
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dbt.secrets' ]
+    cmds:
+      - rm logs/dbt_databricks_*.log
+      - rm logs/dbt_snowflake_*.log
+      - source .venv/bin/activate && dbt clean
+
+  build_dcm_data_contracts:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    cmds:
+      - ./.github/scripts/import_data_contracts.sh
+  
+  build_dcm_source_systems:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    cmds:
+      - ./.github/scripts/create_source_systems.sh
+  
+  build_dcm_data_products:
+    deps: [ build_dcm_data_contracts ]
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    cmds:
+      - ./.github/scripts/create_data_products.sh
+  
+  publish_dcm:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    cmds:
+      - task: build_dcm_source_systems
+      - task: build_dcm_data_products
+      - ./.github/scripts/dcm_publish.sh
+  
+  clean_dcm:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    cmds:
+      - ./.github/scripts/dcm_clean.sh
+      - rm metadata/output/data_contracts/*
+      - rm metadata/output/data_products/*
+      - rm metadata/output/source_systems/*
+  
+  seed_databricks:
+    deps: [ install_dbt_databricks ]
+    cmds:
+      - task: seed_dbt_databricks
+  
+  seed_snowflake:
+    deps: [ install_dbt_snowflake ]
+    cmds:
+      - task: seed_dbt_snowflake
+
+  clean:
+    deps: [ clean_snowflake_database, clean_databricks_database, clean_dbt, clean_dcm ]
