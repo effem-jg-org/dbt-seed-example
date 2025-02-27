@@ -12,5 +12,5 @@ profile: default # Put your profile here
 seed-paths: ["seeds", "csv"]
 
 seeds:
-  jaffle_shop:
-    +schema: data_first
+  jaffle_shop_seed:
+    +schema: "raw_{{ target.name }}"
