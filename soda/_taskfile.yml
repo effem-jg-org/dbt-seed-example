@@ -1,0 +1,66 @@
+version: "3"
+
+tasks:
+
+  _venv:
+    internal: true
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - python3 -m venv .venv
+  
+  _install:
+    internal: true
+    deps: [ _venv ]
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - source .venv/bin/activate && python3 -m pip install --upgrade pip --progress-bar off > /dev/null
+  
+  _install_databricks:
+    internal: true
+    dir: '{{.USER_WORKING_DIR}}'
+    deps: [ _install ]
+    cmds:
+      - source .venv/bin/activate && python3 -m pip install -i https://pypi.cloud.soda.io soda-core-spark[databricks] --progress-bar off > /dev/null
+  
+  _install_snowflake:
+    internal: true
+    dir: '{{.USER_WORKING_DIR}}'
+    deps: [ _install ]
+    cmds:
+      - source .venv/bin/activate && python3 -m pip install -i https://pypi.cloud.soda.io soda-core-snowflake --progress-bar off > /dev/null
+  
+  build:
+    dir: '{{.USER_WORKING_DIR}}'
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dbt.secrets' ]
+    cmds:
+      - ./soda/scripts/create_soda_data_quality.sh
+  
+  run_databricks:
+    dir: '{{.USER_WORKING_DIR}}'
+    dotenv: [ 
+      '{{.USER_WORKING_DIR}}/.env', 
+      '{{.HOME}}/creds/dbt.secrets',
+      '{{.HOME}}/creds/databricks.secrets'
+    ]
+
+    cmds:
+      - ./soda/scripts/run_soda_data_quality.sh "dna_databricks_${DBT_ENV_TARGET}"
+  
+  run_snowflake:
+    dir: '{{.USER_WORKING_DIR}}'
+    dotenv: [ 
+      '{{.USER_WORKING_DIR}}/.env', 
+      '{{.HOME}}/creds/dbt.secrets',
+      '{{.HOME}}/creds/snowflake.secrets'
+    ]
+
+    cmds:
+      - ./soda/scripts/run_soda_data_quality.sh "dna_snowflake_${DBT_ENV_TARGET}"
+  
+  clean:
+    dir: '{{.USER_WORKING_DIR}}'
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env','{{.HOME}}/creds/dbt.secrets' ]
+
+    cmds:
+       - rm soda/${DBT_END_DBT_ENV_SCHEMA}
+       - rm metadata/output/data_quality/*

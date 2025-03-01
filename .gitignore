@@ -1,6 +1,7 @@
 dbt/target/*
 dbt/profiles/snowflake/.user.yml
 dbt/seeds/parquet/*
-dbt/logs/*.log
+dbt/logs/*
 dbt/profiles/databricks/.user.yml
+.venv
 metadata/*/*/*.json

@@ -15,7 +15,6 @@ if [[ ! -f metadata/output/source_systems/source.yaml ]]; then
       .links += {
         "homepage": "https://github.com/dbt-labs/jaffle-shop"
       }
-      ' > metadata/output/source_systems/source.json
-
-  yq --yaml-output '.' metadata/output/source_systems/source.json > metadata/output/source_systems/source.yaml
+      ' | \
+    yq --yaml-output '.' > metadata/output/source_systems/source.yaml
 fi

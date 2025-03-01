@@ -13,4 +13,3 @@ seed-paths: ["seeds", "csv"]
 
 seeds:
   jaffle_shop_seed:
-    +schema: "raw_{{ target.name }}"

@@ -2,35 +2,10 @@ dataContractSpecification: 1.1.0
 id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders
 info:
   title: Jaffle Shop RAW Orders Data Contract
-  version: 2025.02.26
+  version: 2025.02.28
   description: Data Contract for Example Jaffle Shop RAW Orders Data provided by dbt/
     created by dbt seed.
   owner: enabling-team
-servers:
-  dna_databricks_production:
-    type: databricks
-    schema: NA
-    host: NA
-    catalog: NA
-  dna_databricks_development:
-    type: databricks
-    schema: jaffle_shop
-    host: NA
-    catalog: datagovernance_mvp
-  aoh_production:
-    type: dataframe
-  aoh_development:
-    type: dataframe
-  snowflake_production:
-    type: snowflake
-    account: NA
-    database: NA
-    schema: NA
-  snowflake_development:
-    type: snowflake
-    account: NA
-    database: DATAGOVERNANCE_MVP
-    schema: JAFFLE_SHOP
 terms:
   usage: The Consumer may use the Data solely for the purpose of building analytical
     data products internally to Mars. The Consumer shall not use the Data for any
@@ -59,7 +34,7 @@ models:
         unique: false
         description: Order customer identifier.
       ordered_at:
-        type: timestamp
+        type: timestamp_ntz
         required: true
         primaryKey: false
         unique: false
@@ -71,19 +46,19 @@ models:
         unique: false
         description: Jaffle store identifier.
       subtotal:
-        type: integer
+        type: int
         required: false
         primaryKey: false
         unique: false
         description: Cost of Jaffle order.
       tax_paid:
-        type: integer
+        type: int
         required: false
         primaryKey: false
         unique: false
         description: Tax on order.
       order_total:
-        type: integer
+        type: int
         required: false
         primaryKey: false
         unique: false
@@ -117,3 +92,14 @@ servicelevels:
     description: Data snapshots are taken once a week, every Monday after data availability.
     interval: weekly
     cron: 0 0 1 * 0
+servers:
+  dna_snowflake_dev:
+    type: snowflake
+    account: MARS-TEST_EASTUS2
+    database: datagovernance_mvp
+    schema: jaffle_shop_raw
+  dna_databricks_dev:
+    type: databricks
+    host: adb-4057509338801929.9.azuredatabricks.net
+    catalog: DATAGOVERNANCE_MVP
+    schema: JAFFLE_SHOP_RAW

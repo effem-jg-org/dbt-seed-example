@@ -14,39 +14,6 @@ terms:
   billing: The Consumer can use the Data at no costs but those indirectly related to platform fees.
   noticePeriod: The Producer shall notify the Consumer of any changes to the Data within 5 days of the change.
 
-### Servers
-
-servers:
-  dna_databricks_production:
-    type: databricks
-    host: NA
-    catalog: NA 
-    schema: NA
-  
-  dna_databricks_development:
-    type: databricks
-    host: NA
-    catalog: NA 
-    schema: NA
-  
-  aoh_production:
-    type: dataframe
-  
-  aoh_development:
-    type: dataframe
-  
-  snowflake_production:
-    type: snowflake
-    account: NA
-    database: NA
-    schema: NA
-  
-  snowflake_development:
-    type: snowflake
-    account: NA
-    database: NA
-    schema: NA
-
 ### servicelevels
 
 servicelevels:

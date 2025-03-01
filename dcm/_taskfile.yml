@@ -1,0 +1,87 @@
+version: "3"
+
+tasks:
+  _venv:
+    internal: true
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - python3 -m venv .venv
+
+  _install:
+    internal: true
+    deps: [ _venv ]
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - source .venv/bin/activate && python3 -m pip install --upgrade pip --progress-bar off > /dev/null
+      - source .venv/bin/activate && python3 -m pip install -r ./dcm/requirements.txt --progress-bar off > /dev/null
+  
+  _build_data_contracts_databricks:
+    internal: true
+    dir: '{{.USER_WORKING_DIR}}'
+    deps: [ _install ]
+    dotenv: [ 
+      '{{.USER_WORKING_DIR}}/.env', 
+      '{{.HOME}}/creds/dcm.secrets', 
+      '{{.HOME}}/creds/dbt.secrets'
+    ]
+    
+    cmds:
+      - ./dcm/scripts/import_data_contracts.sh "databricks"
+  
+  _build_data_contracts_snowflake:
+    internal: true
+    dir: '{{.USER_WORKING_DIR}}'
+    dotenv: [ 
+      '{{.USER_WORKING_DIR}}/.env', 
+      '{{.HOME}}/creds/dcm.secrets', 
+      '{{.HOME}}/creds/dbt.secrets'
+    ]
+    
+    cmds:
+      - ./dcm/scripts/import_data_contracts.sh "snowflake"
+  
+  _build_source_systems:
+    internal: true
+    dir: '{{.USER_WORKING_DIR}}'
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    cmds:
+      - ./dcm/scripts/create_source_systems.sh
+  
+  _build_data_products:
+    internal: true
+    dir: '{{.USER_WORKING_DIR}}'
+    dotenv: [ 
+      '{{.USER_WORKING_DIR}}/.env', 
+      '{{.HOME}}/creds/dcm.secrets',
+      '{{.HOME}}/creds/dbt.secrets'
+    ]
+
+    cmds:
+      - ./dcm/scripts/create_data_products.sh
+  
+  publish_databricks:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - task: _build_source_systems
+      - task: _build_data_contracts_databricks
+      - task: _build_data_products
+      - ./dcm/scripts/dcm_publish.sh
+  
+  publish_snowflake:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - task: _build_source_systems
+      - task: _build_data_contracts_snowflake
+      - task: _build_data_products
+      - ./dcm/scripts/dcm_publish.sh
+  
+  clean:
+    dotenv: [ '{{.USER_WORKING_DIR}}/.env', '{{.HOME}}/creds/dcm.secrets' ]
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - ./dcm/scripts/dcm_clean.sh
+      - rm metadata/output/data_contracts/*
+      - rm metadata/output/data_products/*
+      - rm metadata/output/source_systems/*

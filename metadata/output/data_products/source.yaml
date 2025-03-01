@@ -15,48 +15,150 @@ inputPorts:
     autoApprove: false
     containsPii: false
 outputPorts:
-  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:customers
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:customers-snowflake
     name: Jaffle Shop RAW Customers Data Contract
     description: Data Contract for Example Jaffle Shop RAW Customers Data provided
       by dbt/ created by dbt seed.
     dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:customers
     autoApprove: false
     containsPii: false
-  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items
+    type: snowflake
+    server:
+      account: MARS-TEST_EASTUS2
+      database: datagovernance_mvp
+      schema: jaffle_shop_raw
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items-snowflake
     name: Jaffle Shop RAW Items Data Contract
     description: Data Contract for Example Jaffle Shop RAW Items Data provided by
       dbt/ created by dbt seed.
     dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items
     autoApprove: false
     containsPii: false
-  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders
+    type: snowflake
+    server:
+      account: MARS-TEST_EASTUS2
+      database: datagovernance_mvp
+      schema: jaffle_shop_raw
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders-snowflake
     name: Jaffle Shop RAW Orders Data Contract
     description: Data Contract for Example Jaffle Shop RAW Orders Data provided by
       dbt/ created by dbt seed.
     dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders
     autoApprove: false
     containsPii: false
-  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:products
+    type: snowflake
+    server:
+      account: MARS-TEST_EASTUS2
+      database: datagovernance_mvp
+      schema: jaffle_shop_raw
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:products-snowflake
     name: Jaffle Shop RAW Products Data Contract
     description: Data Contract for Example Jaffle Shop RAW Products Data provided
       by dbt/ created by dbt seed.
     dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:products
     autoApprove: false
     containsPii: false
-  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:stores
+    type: snowflake
+    server:
+      account: MARS-TEST_EASTUS2
+      database: datagovernance_mvp
+      schema: jaffle_shop_raw
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:stores-snowflake
     name: Jaffle Shop RAW Stores Data Contract
     description: Data Contract for Example Jaffle Shop RAW Stores Data provided by
       dbt/ created by dbt seed.
     dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:stores
     autoApprove: false
     containsPii: false
-  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:supplies
+    type: snowflake
+    server:
+      account: MARS-TEST_EASTUS2
+      database: datagovernance_mvp
+      schema: jaffle_shop_raw
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:supplies-snowflake
     name: Jaffle Shop RAW Supplies Data Contract
     description: Data Contract for Example Jaffle Shop RAW Supplies Data provided
       by dbt/ created by dbt seed.
     dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:supplies
     autoApprove: false
     containsPii: false
+    type: snowflake
+    server:
+      account: MARS-TEST_EASTUS2
+      database: datagovernance_mvp
+      schema: jaffle_shop_raw
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:customers-databricks
+    name: Jaffle Shop RAW Customers Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Customers Data provided
+      by dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:customers
+    autoApprove: false
+    containsPii: false
+    type: databricks
+    server:
+      host: adb-4057509338801929.9.azuredatabricks.net
+      catalog: DATAGOVERNANCE_MVP
+      schema: JAFFLE_SHOP_RAW
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items-databricks
+    name: Jaffle Shop RAW Items Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Items Data provided by
+      dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:items
+    autoApprove: false
+    containsPii: false
+    type: databricks
+    server:
+      host: adb-4057509338801929.9.azuredatabricks.net
+      catalog: DATAGOVERNANCE_MVP
+      schema: JAFFLE_SHOP_RAW
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders-databricks
+    name: Jaffle Shop RAW Orders Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Orders Data provided by
+      dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:orders
+    autoApprove: false
+    containsPii: false
+    type: databricks
+    server:
+      host: adb-4057509338801929.9.azuredatabricks.net
+      catalog: DATAGOVERNANCE_MVP
+      schema: JAFFLE_SHOP_RAW
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:products-databricks
+    name: Jaffle Shop RAW Products Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Products Data provided
+      by dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:products
+    autoApprove: false
+    containsPii: false
+    type: databricks
+    server:
+      host: adb-4057509338801929.9.azuredatabricks.net
+      catalog: DATAGOVERNANCE_MVP
+      schema: JAFFLE_SHOP_RAW
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:stores-databricks
+    name: Jaffle Shop RAW Stores Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Stores Data provided by
+      dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:stores
+    autoApprove: false
+    containsPii: false
+    type: databricks
+    server:
+      host: adb-4057509338801929.9.azuredatabricks.net
+      catalog: DATAGOVERNANCE_MVP
+      schema: JAFFLE_SHOP_RAW
+  - id: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:supplies-databricks
+    name: Jaffle Shop RAW Supplies Data Contract
+    description: Data Contract for Example Jaffle Shop RAW Supplies Data provided
+      by dbt/ created by dbt seed.
+    dataContractId: urn:datacontract:project:jaffle-shop:dbt-seed:raw-model:supplies
+    autoApprove: false
+    containsPii: false
+    type: databricks
+    server:
+      host: adb-4057509338801929.9.azuredatabricks.net
+      catalog: DATAGOVERNANCE_MVP
+      schema: JAFFLE_SHOP_RAW
 tags:
   - POC
   - RAW
