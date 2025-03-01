@@ -1,0 +1,60 @@
+checks for raw_supplies:
+- schema:
+    fail:
+      when required column missing:
+      - id
+    name: raw_supplies__id__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        id: string
+    name: raw_supplies__id__field_type
+- schema:
+    fail:
+      when required column missing:
+      - name
+    name: raw_supplies__name__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        name: string
+    name: raw_supplies__name__field_type
+- missing_count(name) = 0:
+    name: raw_supplies__name__field_required
+- schema:
+    fail:
+      when required column missing:
+      - cost
+    name: raw_supplies__cost__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        cost: int
+    name: raw_supplies__cost__field_type
+- missing_count(cost) = 0:
+    name: raw_supplies__cost__field_required
+- schema:
+    fail:
+      when required column missing:
+      - perishable
+    name: raw_supplies__perishable__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        perishable: boolean
+    name: raw_supplies__perishable__field_type
+- missing_count(perishable) = 0:
+    name: raw_supplies__perishable__field_required
+- schema:
+    fail:
+      when required column missing:
+      - sku
+    name: raw_supplies__sku__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        sku: string
+    name: raw_supplies__sku__field_type
+- missing_count(sku) = 0:
+    name: raw_supplies__sku__field_required
+

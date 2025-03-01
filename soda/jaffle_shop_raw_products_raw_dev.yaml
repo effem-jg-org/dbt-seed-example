@@ -1,0 +1,62 @@
+checks for raw_products:
+- schema:
+    fail:
+      when required column missing:
+      - sku
+    name: raw_products__sku__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        sku: string
+    name: raw_products__sku__field_type
+- missing_count(sku) = 0:
+    name: raw_products__sku__field_required
+- duplicate_count(sku) = 0:
+    name: raw_products__sku__field_unique
+- schema:
+    fail:
+      when required column missing:
+      - name
+    name: raw_products__name__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        name: string
+    name: raw_products__name__field_type
+- missing_count(name) = 0:
+    name: raw_products__name__field_required
+- schema:
+    fail:
+      when required column missing:
+      - type
+    name: raw_products__type__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        type: string
+    name: raw_products__type__field_type
+- missing_count(type) = 0:
+    name: raw_products__type__field_required
+- schema:
+    fail:
+      when required column missing:
+      - price
+    name: raw_products__price__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        price: int
+    name: raw_products__price__field_type
+- missing_count(price) = 0:
+    name: raw_products__price__field_required
+- schema:
+    fail:
+      when required column missing:
+      - description
+    name: raw_products__description__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        description: string
+    name: raw_products__description__field_type
+

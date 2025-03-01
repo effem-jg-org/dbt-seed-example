@@ -1,0 +1,78 @@
+checks for raw_orders:
+- schema:
+    fail:
+      when required column missing:
+      - id
+    name: raw_orders__id__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        id: string
+    name: raw_orders__id__field_type
+- schema:
+    fail:
+      when required column missing:
+      - customer
+    name: raw_orders__customer__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        customer: string
+    name: raw_orders__customer__field_type
+- missing_count(customer) = 0:
+    name: raw_orders__customer__field_required
+- schema:
+    fail:
+      when required column missing:
+      - ordered_at
+    name: raw_orders__ordered_at__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        ordered_at: timestamp_ntz
+    name: raw_orders__ordered_at__field_type
+- missing_count(ordered_at) = 0:
+    name: raw_orders__ordered_at__field_required
+- schema:
+    fail:
+      when required column missing:
+      - store_id
+    name: raw_orders__store_id__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        store_id: string
+    name: raw_orders__store_id__field_type
+- missing_count(store_id) = 0:
+    name: raw_orders__store_id__field_required
+- schema:
+    fail:
+      when required column missing:
+      - subtotal
+    name: raw_orders__subtotal__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        subtotal: int
+    name: raw_orders__subtotal__field_type
+- schema:
+    fail:
+      when required column missing:
+      - tax_paid
+    name: raw_orders__tax_paid__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        tax_paid: int
+    name: raw_orders__tax_paid__field_type
+- schema:
+    fail:
+      when required column missing:
+      - order_total
+    name: raw_orders__order_total__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        order_total: int
+    name: raw_orders__order_total__field_type
+

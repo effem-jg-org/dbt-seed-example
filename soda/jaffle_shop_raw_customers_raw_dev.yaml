@@ -1,0 +1,24 @@
+checks for raw_customers:
+- schema:
+    fail:
+      when required column missing:
+      - id
+    name: raw_customers__id__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        id: string
+    name: raw_customers__id__field_type
+- schema:
+    fail:
+      when required column missing:
+      - name
+    name: raw_customers__name__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        name: string
+    name: raw_customers__name__field_type
+- missing_count(name) = 0:
+    name: raw_customers__name__field_required
+

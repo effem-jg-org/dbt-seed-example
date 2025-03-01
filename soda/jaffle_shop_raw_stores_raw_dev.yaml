@@ -1,0 +1,48 @@
+checks for raw_stores:
+- schema:
+    fail:
+      when required column missing:
+      - id
+    name: raw_stores__id__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        id: string
+    name: raw_stores__id__field_type
+- schema:
+    fail:
+      when required column missing:
+      - name
+    name: raw_stores__name__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        name: string
+    name: raw_stores__name__field_type
+- missing_count(name) = 0:
+    name: raw_stores__name__field_required
+- schema:
+    fail:
+      when required column missing:
+      - opened_at
+    name: raw_stores__opened_at__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        opened_at: timestamp_ntz
+    name: raw_stores__opened_at__field_type
+- missing_count(opened_at) = 0:
+    name: raw_stores__opened_at__field_required
+- schema:
+    fail:
+      when required column missing:
+      - tax_rate
+    name: raw_stores__tax_rate__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        tax_rate: float
+    name: raw_stores__tax_rate__field_type
+- missing_count(tax_rate) = 0:
+    name: raw_stores__tax_rate__field_required
+

@@ -1,0 +1,34 @@
+checks for raw_items:
+- schema:
+    fail:
+      when required column missing:
+      - id
+    name: raw_items__id__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        id: string
+    name: raw_items__id__field_type
+- schema:
+    fail:
+      when required column missing:
+      - order_id
+    name: raw_items__order_id__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        order_id: string
+    name: raw_items__order_id__field_type
+- missing_count(order_id) = 0:
+    name: raw_items__order_id__field_required
+- schema:
+    fail:
+      when required column missing:
+      - sku
+    name: raw_items__sku__field_is_present
+- schema:
+    fail:
+      when wrong column type:
+        sku: string
+    name: raw_items__sku__field_type
+

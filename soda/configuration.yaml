@@ -1,0 +1,26 @@
+data_source dna_databricks_dev:
+  type: spark
+  method: databricks
+  catalog: DATAGOVERNANCE_MVP
+  schema: JAFFLE_SHOP_RAW
+  host: adb-4057509338801929.9.azuredatabricks.net
+  http_path: ${DATABRICKS_CLUSTER_HTTP_PATH}
+  token: ${DATABRICKS_TOKEN}
+  sampler:
+    samples_limit: 999999
+data_source dna_snowflake_dev:
+  type: snowflake
+  account: ${SNOWFLAKE_ACCOUNT}
+  database: datagovernance_mvp
+  schema: jaffle_shop_raw
+  username: ${SNOWFLAKE_USER}
+  password: ${SNOWFLAKE_PASSWORD}
+  role: ${SNOWFLAKE_ROLE}
+  connection_timeout: 120
+  client_session_keep_alive: true
+  authenticator: externalbrowser
+  session_params:
+    QUERY_TAG: soda-queries
+    QUOTED_IDENTIFIERS_IGNORE_CASE: false
+  sampler:
+    samples_limit: 999999
